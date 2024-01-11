@@ -11,4 +11,4 @@ const log = logger({
   timestamp: () => `,"time": "${new Date().toLocaleString()}"`,
 });
 
-module.exports = { log };
+module.exports = log;

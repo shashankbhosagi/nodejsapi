@@ -2,8 +2,9 @@ const express = require("express");
 const ip = require("ip");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const { customResponse } = require("./domain/response");
-const { log } = require("./util/logger");
+const Response = require("./domain/response");
+const logger = require("./util/logger");
+const HttpStatus = require("./controller/patient.controller");
 
 dotenv.config();
 const PORT = process.env.SERVER_PORT || 3000;
@@ -13,10 +14,15 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   res.json(
-    new customResponse(200, "OK", "Patient API, v1.0.0 -all systems go", "yo")
+    new Response(
+      HttpStatus.OK.code,
+      HttpStatus.OK.status,
+      "Patient API, v1.0.0 -all systems go",
+      "yo"
+    )
   );
 });
 
 app.listen(PORT, () => {
-  log.info(`Server running on: ${ip.address()}:${PORT}`);
+  logger.info(`Server running on: ${ip.address()}:${PORT}`);
 });

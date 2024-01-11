@@ -1,4 +1,4 @@
-const database = require("../config/mysql.config");
+const { pool: database } = require("../config/mysql.config");
 const Response = require("../domain/response");
 const logger = require("../util/logger");
 const QUERY = require("../query/patient.query");

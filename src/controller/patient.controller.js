@@ -13,7 +13,7 @@ const HttpStatus = {
 };
 
 const getPatients = (req, res) => {
-  logger.info(`${req.method} ${req.originalurl}, fetching patients`);
+  logger.info(`${req.method} ${req.originalUrl}, fetching patients`);
   database.query(QUERY.SELECT_PATIENTS, (error, results) => {
     if (!results) {
       res
@@ -40,9 +40,9 @@ const getPatients = (req, res) => {
   });
 };
 const createPatient = (req, res) => {
-  logger.info(`${req.method} ${req.originalurl}, creating patients`);
+  logger.info(`${req.method} ${req.originalUrl}, creating patients`);
   database.query(
-    QUERY.CREATE_PATIENT,
+    QUERY.CREATE_PATIENT_PROCEDURE,
     Object.values(req.body),
     (error, results) => {
       if (!results) {
@@ -57,11 +57,12 @@ const createPatient = (req, res) => {
             )
           );
       } else {
-        const patient = {
-          id: results.insertedId,
-          ...req.body,
-          created_at: new Date(),
-        };
+        // const patient = {
+        //   id: results.insertedId,
+        //   ...req.body,
+        //   created_at: new Date(),
+        // };.
+        const patient = results[0][0];
         res
           .status(HttpStatus.CREATED.code)
           .send(
@@ -77,7 +78,7 @@ const createPatient = (req, res) => {
   );
 };
 const getPatient = (req, res) => {
-  logger.info(`${req.method} ${req.originalurl}, fetching patients`);
+  logger.info(`${req.method} ${req.originalUrl}, fetching patients`);
   database.query(QUERY.SELECT_PATIENT, [req.params.id], (error, results) => {
     if (!results[0]) {
       res
@@ -104,7 +105,7 @@ const getPatient = (req, res) => {
   });
 };
 const updatePatient = (req, res) => {
-  logger.info(`${req.method} ${req.originalurl}, fetching patient`);
+  logger.info(`${req.method} ${req.originalUrl}, fetching patient`);
   database.query(QUERY.SELECT_PATIENT, [req.params.id], (error, results) => {
     if (!results[0]) {
       res
@@ -117,7 +118,7 @@ const updatePatient = (req, res) => {
           )
         );
     } else {
-      logger.info(`${req.method} ${req.originalurl}, updating patient`);
+      logger.info(`${req.method} ${req.originalUrl}, updating patient`);
       database.query(
         QUERY.UPDATE_PATIENT,
         [...Object.values(req.body), req.params.id],
@@ -152,7 +153,7 @@ const updatePatient = (req, res) => {
 };
 
 const deletePatient = (req, res) => {
-  logger.info(`${req.method} ${req.originalurl}, deleting patients`);
+  logger.info(`${req.method} ${req.originalUrl}, deleting patients`);
   database.query(QUERY.DELETE_PATIENT, [req.params.id], (error, results) => {
     if (results.affectedRows > 0) {
       res
